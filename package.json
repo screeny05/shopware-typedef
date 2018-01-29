@@ -1,0 +1,11 @@
+{
+  "name": "shopware-typedef",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.d.ts",
+  "author": "Sebastian Langer <sl@scn.cx>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jquery": "^2.0.48"
+  }
+}
