@@ -6,7 +6,7 @@
 npm install --save-dev shopware-typedef
 ```
 
-In your code it should probably look somethin like this:
+In your code it should probably look something like this:
 
 ```typescript
 /// <reference types="shopware-typedef"/>
