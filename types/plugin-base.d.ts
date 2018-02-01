@@ -18,11 +18,12 @@ declare abstract class SwPluginPrototype {
     getOptions(): any;
     getOption(): any;
     setOption(key: string, value: any): this;
-    applyDataAttributes(shouldDeserialize: boolean): any;
+    applyDataAttributes(shouldDeserialize?: boolean): any;
 }
 
-interface SwPluginPrototypeConstructor {
-    new(): SwPluginPrototype;
+interface SwPluginPrototypeConstructor<T = SwPluginPrototype, U = any> {
+    new(name: string, element: JQuery, options?: U): T;
+    prototype: T;
 }
 
 interface SwPluginDefinition {
@@ -88,7 +89,7 @@ interface JQueryStatic {
     unsubscribe(name: string, handler: Function): void;
     publish(name: string, data: any[]): void;
 
-    plugin(name: string, plugin: SwPluginDefinition): void;
+    plugin(name: string, plugin: SwPluginDefinition | SwPluginPrototypeConstructor): void;
     overridePlugin(pluginName: string, override: any): void;
     extendsPlugin(pluginName: string, basePluginName: string, override: any): void;
     PluginBase: SwPluginPrototypeConstructor;

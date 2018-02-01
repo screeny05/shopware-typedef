@@ -1,11 +1,24 @@
 {
     "name": "shopware-typedef",
-    "version": "0.2.0",
-    "description": "",
+    "version": "0.3.0",
+    "description": "Shopware 5 Typescript definitions",
+    "keywords": [
+        "shopware",
+        "jquery",
+        "typescript",
+        "d.ts",
+        "typescript defintions",
+        "shopware typescript",
+        "statemanager"
+    ],
     "main": "index.d.ts",
     "author": "Sebastian Langer <sl@scn.cx>",
+    "homepage": "https://github.com/screeny05/shopware-typedef",
+    "bugs": {
+        "url": "https://github.com/screeny05/shopware-typedef/issues"
+    },
     "license": "MIT",
-    "devDependencies": {
+    "peerDependencies": {
         "@types/jquery": "^2.0.48"
     }
 }
