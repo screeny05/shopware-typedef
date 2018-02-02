@@ -3,29 +3,26 @@ interface SwStateManagerBreakpoint {
     enter: number;
     exit: number;
 }
-interface SwStateManagerListenerTransition {
-    exiting: string;
-    entering: string;
-}
+
 interface SwStateManagerListener {
     state: string;
     enter?(e: SwStateManagerListenerTransition): void;
     exit?(e: SwStateManagerListenerTransition): void;
 }
+
+interface SwStateManagerListenerTransition {
+    exiting: string;
+    entering: string;
+}
+
 interface SwStateManagerMatchMediaResult {
     matches: boolean;
     media: string;
 }
+
 interface SwStateManagerScrollBarSize {
     width: number;
     height: number;
-}
-interface SwEventEmitter {
-    on<T>(eventName: string, callback: (this: T, ...args: any[]) => void, context?: T): this;
-    once<T>(eventName: string, callback: (this: T, ...args: any[]) => void, context?: T): this;
-    off(eventName: string, callback?: Function, context?: any): this;
-    trigger(eventName: string, ...args: any[]): this;
-    destroy(): void;
 }
 
 interface SwStateManager extends SwEventEmitter {
@@ -55,7 +52,7 @@ interface SwStateManager extends SwEventEmitter {
     isPortraitMode(): boolean;
     isLandscapeMode(): boolean;
     getDevicePixelRatio(): number;
-    isBrowser(): boolean;
+    isBrowser(browser: string): boolean;
     getScrollBarSize(): SwStateManagerScrollBarSize;
     getScrollBarWidth(): number;
     getScrollBarHeight(): number;
@@ -64,9 +61,12 @@ interface SwStateManager extends SwEventEmitter {
     cancelAnimationFrame(id: number): void;
     getVendorProperty(property: string, softError: boolean): string;
 
-    on<T>(eventName: string, callback: (this: T, ...args: any[]) => void, context?: T): this;
     on<T>(eventName: 'resize', callback: (this: T, width: number) => void, context?: T): this;
+    once<T>(eventName: 'resize', callback: (this: T, width: number) => void, context?: T): this;
     on<T>(eventName: 'exitBreakpoint', callback: (this: T, previousState: string) => void, context?: T): this;
+    once<T>(eventName: 'exitBreakpoint', callback: (this: T, previousState: string) => void, context?: T): this;
     on<T>(eventName: 'changeBreakpoint', callback: (this: T, transition: SwStateManagerListenerTransition) => void, context?: T): this;
+    once<T>(eventName: 'changeBreakpoint', callback: (this: T, transition: SwStateManagerListenerTransition) => void, context?: T): this;
     on<T>(eventName: 'enterBreakpoint', callback: (this: T, state: string) => void, context?: T): this;
+    once<T>(eventName: 'enterBreakpoint', callback: (this: T, state: string) => void, context?: T): this;
 }

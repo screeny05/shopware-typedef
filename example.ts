@@ -29,8 +29,6 @@ PluginsCollection.bitFlyout.defaults.foobar = 'asd';
 
 
 
-
-
 interface ScnFooOptions {
     width: number;
     height: number;
@@ -105,5 +103,9 @@ $.plugin('scnBar', {
 
 /** @type {SwStateManager} */
 var sman = {};
+sman.addPlugin('.foo', 'bar');
 
-sman.[...] // intellisense available
+
+$.overlay.open({
+    closeOnClick: false
+});

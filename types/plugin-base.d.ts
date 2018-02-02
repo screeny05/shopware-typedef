@@ -33,8 +33,6 @@ interface SwPluginDefinition {
     update?(): void;
 }
 
-
-
 interface SwPluginsCollection {
     swAddArticle: SwPluginDefinition;
     swAddressEditor: SwPluginDefinition;

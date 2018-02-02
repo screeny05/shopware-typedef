@@ -3,6 +3,7 @@
 /// <reference path="./types/storage-manager"/>
 /// <reference path="./types/csrf"/>
 /// <reference path="./types/plugin-base"/>
+/// <reference path="./types/event-emitter"/>
 
 declare var PluginsCollection: SwPluginsCollection;
 declare var StateManager: SwStateManager;
