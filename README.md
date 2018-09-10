@@ -18,7 +18,7 @@ npm install --save-dev @types/jquery@2.x shopware-typedef
 
 ## Usage
 
-In TypeScript code it should probably look something like this:
+In TypeScript code it should look like this:
 
 ```typescript
 /// <reference types="shopware-typedef"/>
@@ -29,13 +29,17 @@ export class ScnFoo extends $.PluginBase implements SwPluginDefinition {
     }
 }
 
-$.plugin('scnFoo', ScnFoo.prototype);
+$.plugin('scnFoo', ScnFoo);
 
 declare global {
-    interface JQuery { scnFoo(): JQuery }
-    interface SwPluginsCollection { scnFoo: ScnFoo }
+    interface JQuery { scnFoo(): JQuery; }
+    interface SwPluginsCollection { scnFoo: SwPluginPrototypeConstructor<ScnFoo>; }
 }
 ```
+
+The type `SwPluginPrototypeConstructor` is a constructor-interface for all classes extending `$.PluginBase` accepting a type `T` which indicates what you want to return. And a type `U` indicating the type of the options if any.
+
+The constructor itself has the signature `new(name: string, element: JQuery, options?: U): T`.
 
 If you use plain JavaScript you can still use the typings in an IDE that supports it (Atom, VS Code, PHPStorm, etc.)
 
@@ -75,7 +79,7 @@ $.plugin('scnBar', {
 });
 ```
 
-Support may vary.
+Support may vary depending on your IDE.
 
 More Info is available in the [TypeScript Wiki](https://github.com/Microsoft/TypeScript/wiki/JSDoc-support-in-JavaScript).
 
@@ -101,11 +105,11 @@ export class ScnFoo extends $.PluginBase<ScnFooOptions> implements SwPluginDefin
     }
 }
 
-$.plugin('scnFoo', ScnFoo.prototype);
+$.plugin('scnFoo', ScnFoo);
 
 declare global {
     interface JQuery { scnFoo(options?: Partial<ScnFooOptions>): JQuery; }
-    interface SwPluginsCollection { scnFoo: ScnFoo; }
+    interface SwPluginsCollection { scnFoo: SwPluginPrototypeConstructor<ScnFoo, Partial<ScnFooOptions>>; }
 }
 ```
 
@@ -128,9 +132,10 @@ StateManager.addPlugin('.js--foo', 'scnFoo', { width: 150 });
 
 The declare global-block is necessary for all Plugins in order to get typescript to understand, that we've extended `window.$` and `window.PluginsCollection`
 
-Be aware that you can't yet pass `$.plugin()` a constructor as a second argument. There's already an issue at shopware for that: [#1489](https://github.com/shopware/shopware/pull/1489)
+Be aware, that there was a Bug in the Shopware `$.plugin()`-implementation preventing developers from passing a constructor as the second argument. The Issue has been resolve in Shopware@5.5. This is the PR for that: [#1489](https://github.com/shopware/shopware/pull/1489)
 
-If that gets merged, you can add plugins like this
+Prior sw-versions need to provide not the Class itself, but the prototype.
+
 ```typescript
 interface ScnFooOptions {
     width: number;
@@ -138,28 +143,23 @@ interface ScnFooOptions {
 }
 
 export class ScnFoo extends $.PluginBase<ScnFooOptions> implements SwPluginDefinition {
+    defaults: ScnFooOptions = {
+        width: 100,
+        height: 200
+    }
     init(){
-        console.log('scnFoo');
+        this.applyDataAttributes();
+        this.opts.[...] // intellisense now available for opts
     }
 }
 
-$.plugin('scnFoo', ScnFoo);
+$.plugin('scnFoo', ScnFoo.prototype);
 
 declare global {
-    interface JQuery { scnFoo(): JQuery; }
-    interface SwPluginsCollection { scnFoo: SwPluginPrototypeConstructor<ScnFoo, Partial<ScnFooOptions>>; }
+    interface JQuery { scnFoo(options?: Partial<ScnFooOptions>): JQuery; }
+    interface SwPluginsCollection { scnFoo: ScnFoo; }
 }
-
-const instance = new PluginsCollection.scnFoo('scnFoo', $el, {
-    width: 200
-});
 ```
-
-This does not yet work in Shopware 5.3.7.
-
-The type `SwPluginPrototypeConstructor` is a constructor-interface for all classes extending `$.PluginBase` accepting a type `T` which indicates what you want to return. And a type `U` indicating the type of the options if any.
-
-The constructor itself has the signature `new(name: string, element: JQuery, options?: U): T`.
 
 
 ## Contributions
